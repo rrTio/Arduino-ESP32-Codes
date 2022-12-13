@@ -36,7 +36,7 @@ long durationA, durationB;
 int distanceA, distanceB;
 float cmA, inA, cmB, inB;
 
-int state = 0
+int state = 0;
 
 void setup() {
   Serial.begin(115200);
