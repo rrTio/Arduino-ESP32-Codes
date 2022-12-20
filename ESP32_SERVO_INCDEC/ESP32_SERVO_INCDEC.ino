@@ -21,7 +21,7 @@ int pinD = 33;
 int pinE = 32;
 int pinF = 35;
 
-int openValue = 90;
+int openValue = 180;
 int closeValue = 0;
 
 //OUTSIDE DETECTOR
@@ -95,21 +95,17 @@ void loop() {
   Serial.print("Inches B: ");
   Serial.println(inB);
 
-  if(cmA < 20){
+  if(cmA < 10){
     openServo();
-    delay(delayTime);
-    closeServo();
-    delay(delayTime);
     }
-
-  if(cmB <20){
+  if(cmB < 10){
     openServo();
     state = 1;
     }
   else{
     closeServo();
     state = 0;
-    }
+  }
 }
 
 void openServo(){
@@ -138,7 +134,7 @@ void handle_NotFound(){
   server.send(404, "text/plain", "Not found");
 }
 
-String SendHTML(float centA, float inchA, float centB, float inchB, int stat){
+String SendHTML(float centA, float inchA, float centB, float inchB, int binStatus){
   String ptr = "<!DOCTYPE html> <html>\n";
   ptr +="<head><meta name=\"viewport\" http-equiv=\"refresh\" content=\" 2\" width=device-width, initial-scale=1.0, user-scalable=no\">\n";
   ptr +="<title>LED, IR, & ULTRASONIC</title>\n";
@@ -157,7 +153,7 @@ String SendHTML(float centA, float inchA, float centB, float inchB, int stat){
   ptr +="<body>\n";
   ptr +="<h3>WEB SERVER USING ESP32 ACCESS POINT</h3>\n";
   
-  ptr +="<h3>ULTRASONIC A</h3>\n";
+  ptr +="<h3>ULTRASONIC A</h3>";
   ptr +="<p>CENTIMETERS: ";
   ptr +=centA;
   ptr +="cm</p>\n";
@@ -165,7 +161,7 @@ String SendHTML(float centA, float inchA, float centB, float inchB, int stat){
   ptr += inchA; 
   ptr +="in</p>\n\n";
 
-  ptr +="<h3>ULTRASONIC B</h3>\n";
+  ptr +="\n<h3>ULTRASONIC B</h3>";
   ptr +="<p>CENTIMETERS: ";
   ptr +=centB;
   ptr +="cm</p>\n";
@@ -173,12 +169,11 @@ String SendHTML(float centA, float inchA, float centB, float inchB, int stat){
   ptr += inchB; 
   ptr +="in</p>\n\n";
 
-  if(stat = 1){
-    ptr +="<p>BIN IS FULL</p>\n";
+  if(binStatus = 1){
+    ptr +="<h3>BIN IS NOT FULL</h3>\n";
     }
-    
-  if(stat = 0){
-    ptr +="<p>BIN IS NOT FULL</p>\n";
+  if(binStatus = 0){
+    ptr +="<h3>BIN IS FULL</h3>\n";
     }
   
   ptr +="</body>\n";
